@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_zh">
+        <item>主页</item>
+        <item>统计</item>
+        <item>查询</item>
+        <item>导入</item>
+    </string-array>
+    <string-array name="menu_en" >
+        <item>Main</item>
+        <item>Statistics</item>
+        <item>Search</item>
+        <item>Download</item>
+    </string-array>
+</resources>

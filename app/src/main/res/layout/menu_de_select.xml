@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:gravity="center"
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <com.minminaya.widget.GeneralRoundFrameLayout
+            android:layout_marginEnd="10dp"
+            android:id="@+id/delete"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:corner_radius="40dp"
+            app:elevation="5dp"
+            android:background="#FF5555"
+            android:padding="10dp">
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_delete"/>
+    </com.minminaya.widget.GeneralRoundFrameLayout>
+
+    <com.minminaya.widget.GeneralRoundFrameLayout
+            android:id="@+id/edit"
+            android:layout_marginStart="10dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:corner_radius="40dp"
+            app:elevation="5dp"
+            android:background="#55FFAA"
+            android:padding="10dp">
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_edit"/>
+    </com.minminaya.widget.GeneralRoundFrameLayout>
+</LinearLayout>

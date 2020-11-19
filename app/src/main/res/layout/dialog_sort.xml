@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:minWidth="260dp"
+        android:layout_centerInParent="true"
+        android:paddingTop="16dp"
+        android:background="@drawable/dialog_back"
+        android:orientation="vertical">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:orientation="vertical">
+            <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:textSize="14sp"
+                    android:textColor="#999999"
+                    android:text="@string/type" />
+            <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <RadioButton
+                            android:id="@+id/food"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/food"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                    <RadioButton
+                            android:id="@+id/travel"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/travel"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                    <RadioButton
+                            android:id="@+id/bills"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="bills"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                    <RadioButton
+                            android:id="@+id/outdoor"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/outdoor"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <RadioButton
+                            android:id="@+id/edu"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/edu"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                    <RadioButton
+                            android:id="@+id/clothes"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/clothes"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                    <RadioButton
+                            android:id="@+id/health"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/health"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                    <RadioButton
+                            android:id="@+id/rests"
+                            android:layout_margin="10dp"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:text="@string/rest"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:textColor="@drawable/dialog_radio_button_text_color"
+                            android:background="@drawable/dialog_radio_button"/>
+                </LinearLayout>
+
+
+            </RadioGroup>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:background="#A0A0A0"/>
+            <TextView
+                    android:id="@+id/tv_date_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:textSize="14sp"
+                    android:textColor="#999999"
+                    android:text="@string/date_start" />
+            <DatePicker
+                    android:id="@+id/date_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:background="#A0A0A0"/>
+
+            <TextView
+                    android:id="@+id/tv_date_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:textSize="14sp"
+                    android:textColor="#999999"
+                    android:text="@string/date_end" />
+            <DatePicker
+                    android:id="@+id/date_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:background="#A0A0A0"/>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="16dp"
+            android:background="#E4E4E4" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/negative"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:singleLine="true"
+                tools:text="No"
+                android:textColor="#999999"
+                android:textSize="16sp" />
+        <View
+                android:id="@+id/column_line"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#E4E4E4" />
+        <Button
+                android:id="@+id/positive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:background="@null"
+                android:gravity="center"
+                android:singleLine="true"
+                tools:text="Yes"
+                android:textColor="#38ADFF"
+                android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>

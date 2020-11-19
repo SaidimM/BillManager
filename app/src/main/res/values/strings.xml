@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Background</string>
+    <string name="user">User</string>
+    <string name="name">Name</string>
+    <string name="bills">My Bills</string>
+    <string name="day">day</string>
+    <string name="month">Month</string>
+    <string name="cost">cost</string>
+    <string name="earn">earn</string>
+    <string name="image">image</string>
+    <string name="week">week</string>
+    <string name="food">food</string>
+    <string name="save">save</string>
+    <string name="travel">travel</string>
+    <string name="outdoor">outdoor</string>
+    <string name="edu">edu</string>
+    <string name="clothes">clothes</string>
+    <string name="health">health</string>
+    <string name="rest">rests</string>
+    <string name="sort">sort</string>
+    <string name="date_end">date end</string>
+    <string name="date_start">date start</string>
+    <string name="type">type</string>
+    <string name="pick">pick</string>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <Button
+            android:id="@+id/month"
+            android:layout_marginStart="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/month"
+            android:textAllCaps="false"
+            android:background="@color/colorTransparent"
+            android:textAlignment="viewStart"
+            android:paddingStart="10dp"
+            android:textSize="25sp"
+            tools:ignore="RtlSymmetry"/>
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <lecho.lib.hellocharts.view.LineChartView
+                    android:id="@+id/line"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:orientation="horizontal">
+                <lecho.lib.hellocharts.view.PieChartView
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/pie"
+                        android:padding="20dp"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="220dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_type"
+                        android:layout_weight="2"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/orders"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>
