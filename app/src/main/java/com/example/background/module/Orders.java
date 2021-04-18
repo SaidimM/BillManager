@@ -7,7 +7,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 
-
 @Table(database = DBFlowDataBase.class)
 public class Orders extends BaseModel {
 

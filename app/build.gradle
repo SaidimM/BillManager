@@ -3,7 +3,7 @@ def dbflow_version = "3.0.0-beta4"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.0'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "com.example.background"
@@ -28,28 +28,40 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    //抽屉布局
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
+    //卡片试图
     implementation 'androidx.cardview:cardview:1.0.0'
+    //glide依赖
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    //文件工具
     implementation 'com.zhy.base:fileprovider:1.0.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
+    //圆角布局
     implementation 'com.github.minminaya:GenaralRoundLayout:1.0.0'
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-
+    //DBFlow 数据库
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     // sql-cipher database encyrption (optional)
     implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+    //悬空按钮
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+    //过渡动画
     implementation 'com.github.Shashank02051997:FancyWalkthrough-Android:2.1'
+    //recyclerView
     implementation 'com.android.support:recyclerview-v7:30.1.1'
+    //baseQuickAdapter依赖
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    //万能对话框
     implementation 'com.github.liys666666:LDialog:V1.0.4'
+    //图标
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    //baseAdapter
     implementation 'com.zhy:base-adapter:3.0.3'
+    //material design
+    implementation 'com.google.android.material:material:1.0.0'
 }

@@ -42,7 +42,7 @@ public class OrderManage {
     SimpleDateFormat format;
     private String costOfMonth;
 
-    public OrderManage(){
+    public OrderManage() {
         calendar = new GregorianCalendar();
         tempCalendar = Calendar.getInstance();
         format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
@@ -52,7 +52,7 @@ public class OrderManage {
         costOfMonth = this.getOrders(calendar.get(Calendar.MONTH));
     }
 
-    public OrderManage(int month){
+    public OrderManage(int month) {
         calendar = new GregorianCalendar();
         tempCalendar = Calendar.getInstance();
         format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
@@ -78,7 +78,6 @@ public class OrderManage {
     }
 
 
-
     public String getOrders(int month) {
         monthOrders = new ArrayList<>();
         weekOrders = new ArrayList<>();
@@ -86,18 +85,19 @@ public class OrderManage {
         float sum = 0;
         Date date;
         try {
-            for (int i = totalOrders.size()-1;i>=0;i--) {
+            for (int i = totalOrders.size() - 1; i >= 0; i--) {
                 date = format.parse(totalOrders.get(i).time);
                 assert date != null;
                 tempCalendar.setTime(date);
                 System.out.println(date.getYear());
-                if(calendar.get(Calendar.YEAR) == tempCalendar.get(Calendar.YEAR)){
+                if (calendar.get(Calendar.YEAR) == tempCalendar.get(Calendar.YEAR)) {
                     if (tempCalendar.get(Calendar.MONTH) == month) {
                         monthOrders.add(totalOrders.get(i));
                         sum += totalOrders.get(i).cash;
                         if (calendar.get(Calendar.DAY_OF_MONTH) - tempCalendar.get(Calendar.DAY_OF_MONTH) <= 6) {
                             weekOrders.add(totalOrders.get(i));
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == tempCalendar.get(Calendar.DAY_OF_MONTH)) dayOrders.add(totalOrders.get(i));
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == tempCalendar.get(Calendar.DAY_OF_MONTH))
+                                dayOrders.add(totalOrders.get(i));
                         }
                     }
                 }
@@ -108,18 +108,18 @@ public class OrderManage {
         return (new BigDecimal(sum)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "";
     }
 
-    public float[] getScoreList(List<Orders> list){
+    public float[] getScoreList(List<Orders> list) {
         float[] score = {0, 0, 0, 0, 0};
         tempCalendar = Calendar.getInstance();
         format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
         format.setTimeZone(zone);
         Date date;
         try {
-            for(Orders order : list){
+            for (Orders order : list) {
                 date = format.parse(order.time);
                 assert date != null;
                 tempCalendar.setTime(date);
-                score[tempCalendar.get(Calendar.DAY_OF_MONTH)/7] += order.cash;
+                score[tempCalendar.get(Calendar.DAY_OF_MONTH) / 7] += order.cash;
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -127,20 +127,20 @@ public class OrderManage {
         return score;
     }
 
-    public List<Orders> getSortList(int type,Calendar c1,Calendar c2){
+    public List<Orders> getSortList(int type, Calendar c1, Calendar c2) {
         List<Orders> sortedList = new ArrayList<>();
         Date date;
         try {
-            for(Orders order : totalOrders){
-                if(order.type == type || type == -1){
+            for (Orders order : totalOrders) {
+                if (order.type == type || type == -1) {
                     System.out.println("#################################################################################");
-                    System.out.println(c1.get(Calendar.YEAR)+" "+c1.get(Calendar.MONTH)+" "+c1.get(Calendar.DAY_OF_MONTH)+" "+c2.get(Calendar.YEAR)+" "+c2.get(Calendar.MONTH)+" "+c2.get(Calendar.DAY_OF_MONTH));
+                    System.out.println(c1.get(Calendar.YEAR) + " " + c1.get(Calendar.MONTH) + " " + c1.get(Calendar.DAY_OF_MONTH) + " " + c2.get(Calendar.YEAR) + " " + c2.get(Calendar.MONTH) + " " + c2.get(Calendar.DAY_OF_MONTH));
                     date = format.parse(order.time);
                     assert date != null;
                     tempCalendar.setTime(date);
-                    if(tempCalendar.get(Calendar.YEAR)>=c1.get(Calendar.YEAR)&&tempCalendar.get(Calendar.YEAR)<=c2.get(Calendar.YEAR)){
-                        if(tempCalendar.get(Calendar.MONTH)>=c1.get(Calendar.MONTH)&&tempCalendar.get(Calendar.MONTH)<=c2.get(Calendar.MONTH)){
-                            if(tempCalendar.get(Calendar.DAY_OF_MONTH)>=c1.get(Calendar.DAY_OF_MONTH)&&tempCalendar.get(Calendar.DAY_OF_MONTH)<=c2.get(Calendar.DAY_OF_MONTH)){
+                    if (tempCalendar.get(Calendar.YEAR) >= c1.get(Calendar.YEAR) && tempCalendar.get(Calendar.YEAR) <= c2.get(Calendar.YEAR)) {
+                        if (tempCalendar.get(Calendar.MONTH) >= c1.get(Calendar.MONTH) && tempCalendar.get(Calendar.MONTH) <= c2.get(Calendar.MONTH)) {
+                            if (tempCalendar.get(Calendar.DAY_OF_MONTH) >= c1.get(Calendar.DAY_OF_MONTH) && tempCalendar.get(Calendar.DAY_OF_MONTH) <= c2.get(Calendar.DAY_OF_MONTH)) {
                                 sortedList.add(order);
                             }
                         }
@@ -153,10 +153,10 @@ public class OrderManage {
         return sortedList;
     }
 
-    public List<Orders> getWordSortList(String s){
+    public List<Orders> getWordSortList(String s) {
         List<Orders> sortedList = new ArrayList<>();
-        for(Orders order : totalOrders){
-            if(order.name.contains(s)||order.dealer.contains(s)){
+        for (Orders order : totalOrders) {
+            if (order.name.contains(s) || order.dealer.contains(s)) {
                 sortedList.add(order);
             }
         }

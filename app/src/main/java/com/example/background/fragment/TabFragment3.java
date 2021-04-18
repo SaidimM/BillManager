@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -16,10 +14,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.background.R;
 import com.example.background.Utils.OrderManage;
-import com.example.background.activities.MainActivity;
 import com.example.background.module.Orders;
 import com.example.background.module.Orders_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,7 +27,7 @@ public class TabFragment3 extends Fragment {
     private RecyclerView recycler;
     private ImageButton sort;
     private EditText search;
-    private BaseQuickAdapter<Orders,BaseViewHolder> mAdapter;
+    private BaseQuickAdapter<Orders, BaseViewHolder> mAdapter;
     private OrderManage orderManage;
     private Calendar calendar, tempCalendar;
     private TimeZone zone = TimeZone.getTimeZone("GMT");
@@ -69,8 +67,8 @@ public class TabFragment3 extends Fragment {
     };
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        view = inflater.inflate(R.layout.fragment_tab3,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_tab3, container, false);
         calendar = new GregorianCalendar();
         tempCalendar = Calendar.getInstance();
         format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
@@ -78,7 +76,8 @@ public class TabFragment3 extends Fragment {
         initView();
         return view;
     }
-    private void initView(){
+
+    private void initView() {
         orderManage = new OrderManage();
         recycler = view.findViewById(R.id.recycler);
         sort = view.findViewById(R.id.sort);
@@ -101,7 +100,7 @@ public class TabFragment3 extends Fragment {
         });
     }
 
-    private void initRecycler(){
+    private void initRecycler() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(layoutManager);
@@ -119,9 +118,9 @@ public class TabFragment3 extends Fragment {
         mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                initPopupWindow((Orders)adapter.getData().get(position),position);
-                if(!popup.isShowing()) {
-                    popup.showAtLocation(view, Gravity.CENTER,view.getScrollX(),view.getScrollY());
+                initPopupWindow((Orders) adapter.getData().get(position), position);
+                if (!popup.isShowing()) {
+                    popup.showAtLocation(view, Gravity.CENTER, view.getScrollX(), view.getScrollY());
                 }
                 return true;
             }
@@ -133,7 +132,7 @@ public class TabFragment3 extends Fragment {
     private void initPopupWindow(final Orders order, final int position) {
         View v = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(
                 R.layout.menu_de_select, null);
-        popup = new PopupWindow(v, WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.MATCH_PARENT , true);
+        popup = new PopupWindow(v, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
         v.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +143,7 @@ public class TabFragment3 extends Fragment {
                 orderManage = new OrderManage();
                 mAdapter.remove(position);
                 mAdapter.notifyItemRemoved(position);//刷新被删除的地方
-                mAdapter.notifyItemRangeChanged(position,mAdapter.getItemCount()); //刷新被删除数据，以及其后面的数据
+                mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount()); //刷新被删除数据，以及其后面的数据
                 popup.dismiss();
             }
         });
@@ -171,7 +170,7 @@ public class TabFragment3 extends Fragment {
 
     private void initEditDialog(final Orders item) {
         final AlertDialog customizeDialog = new AlertDialog.Builder(getContext()).create();
-        final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_main,null);
+        final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_main, null);
         customizeDialog.setTitle("edit order");
         customizeDialog.setView(dialogView);
         final DatePicker datePicker = dialogView.findViewById(R.id.date);
@@ -180,24 +179,24 @@ public class TabFragment3 extends Fragment {
         final EditText ed_cost = dialogView.findViewById(R.id.cost);
         final EditText ed_dealer = dialogView.findViewById(R.id.dealer);
         final RadioGroup radioGroup = dialogView.findViewById(R.id.radio_group);
-        ((TextView)dialogView.findViewById(R.id.tv_name)).setText("name");
-        ((TextView)dialogView.findViewById(R.id.tv_cost)).setText("cost");
-        ((TextView)dialogView.findViewById(R.id.tv_dealer)).setText("dealer");
-        ((TextView)dialogView.findViewById(R.id.tv_type)).setText("type");
-        ((TextView)dialogView.findViewById(R.id.tv_date)).setText("date");
-        ((TextView)dialogView.findViewById(R.id.tv_time)).setText("time");
-        ((Button)dialogView.findViewById(R.id.positive)).setText("confirm");
+        ((TextView) dialogView.findViewById(R.id.tv_name)).setText("name");
+        ((TextView) dialogView.findViewById(R.id.tv_cost)).setText("cost");
+        ((TextView) dialogView.findViewById(R.id.tv_dealer)).setText("dealer");
+        ((TextView) dialogView.findViewById(R.id.tv_type)).setText("type");
+        ((TextView) dialogView.findViewById(R.id.tv_date)).setText("date");
+        ((TextView) dialogView.findViewById(R.id.tv_time)).setText("time");
+        ((Button) dialogView.findViewById(R.id.positive)).setText("confirm");
         ed_name.setText(item.name);
-        ed_cost.setText((new BigDecimal(item.cash)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()+"");
+        ed_cost.setText((new BigDecimal(item.cash)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "");
         ed_dealer.setText(item.dealer);
         radioGroup.check(radios[item.type]);
         type = item.type;
-        for(int i=0;i<8;i++){
+        for (int i = 0; i < 8; i++) {
             final int finalI = i;
-            ((RadioButton)dialogView.findViewById(radios[i])).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ((RadioButton) dialogView.findViewById(radios[i])).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    for(int j = 0;j < 8;j++) ((RadioButton) radioGroup.findViewById(radios[j])).setChecked(false);
+                    for (int j = 0; j < 8; j++) ((RadioButton) radioGroup.findViewById(radios[j])).setChecked(false);
                     ((RadioButton) radioGroup.findViewById(radios[finalI])).setChecked(type != finalI);
                     type = finalI;
                 }
@@ -210,9 +209,9 @@ public class TabFragment3 extends Fragment {
                 name = ed_name.getText().toString();
                 cost = ed_cost.getText().toString();
                 dealer = ed_dealer.getText().toString();
-                date = datePicker.getYear() + "-" + ((Integer)datePicker.getMonth()+1) + "-" + datePicker.getDayOfMonth();
-                time = timePicker.getHour() + ":" + timePicker.getMinute() +":"+ calendar.get(Calendar.SECOND);
-                if(!name.equals("")&&!cost.equals("")){
+                date = datePicker.getYear() + "-" + ((Integer) datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
+                time = timePicker.getHour() + ":" + timePicker.getMinute() + ":" + calendar.get(Calendar.SECOND);
+                if (!name.equals("") && !cost.equals("")) {
                     Orders product = SQLite.select()
                             .from(Orders.class)
                             .where(Orders_Table.id.eq(item.id))
@@ -232,7 +231,7 @@ public class TabFragment3 extends Fragment {
                 }
             }
         });
-        ((Button)dialogView.findViewById(R.id.negative)).setText("cancel");
+        ((Button) dialogView.findViewById(R.id.negative)).setText("cancel");
         dialogView.findViewById(R.id.negative).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,18 +244,18 @@ public class TabFragment3 extends Fragment {
     private void initSortDialog() {
         type = -1;
         final AlertDialog customizeDialog = new AlertDialog.Builder(getContext()).create();
-        final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_sort,null);
+        final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_sort, null);
         customizeDialog.setTitle("sort");
         customizeDialog.setView(dialogView);
         final DatePicker dateStart = dialogView.findViewById(R.id.date_start);
         final DatePicker dateEnd = dialogView.findViewById(R.id.date_end);
         final RadioGroup radioGroup = dialogView.findViewById(R.id.radio_group);
-        for(int i=0;i<8;i++){
+        for (int i = 0; i < 8; i++) {
             final int finalI = i;
-            ((RadioButton)dialogView.findViewById(radios[i])).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ((RadioButton) dialogView.findViewById(radios[i])).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    for(int j = 0;j < 8;j++) ((RadioButton) radioGroup.findViewById(radios[j])).setChecked(false);
+                    for (int j = 0; j < 8; j++) ((RadioButton) radioGroup.findViewById(radios[j])).setChecked(false);
                     ((RadioButton) radioGroup.findViewById(radios[finalI])).setChecked(type != finalI);
                     type = finalI;
                 }
@@ -264,19 +263,19 @@ public class TabFragment3 extends Fragment {
         }
 //        Calendar temp = new GregorianCalendar(dateStart.getYear(),dateStart.getMonth(),dateStart.getDayOfMonth());
 //        dateEnd.setMinDate(temp.getTimeInMillis());
-        ((Button)dialogView.findViewById(R.id.positive)).setText("yes");
+        ((Button) dialogView.findViewById(R.id.positive)).setText("yes");
         dialogView.findViewById(R.id.positive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar1 = new GregorianCalendar(dateStart.getYear(),dateStart.getMonth(),dateStart.getDayOfMonth());
-                Calendar calendar2 = new GregorianCalendar(dateEnd.getYear(),dateEnd.getMonth(),dateEnd.getDayOfMonth());
-                List<Orders> sorted = orderManage.getSortList(type,calendar1,calendar2);
-                 mAdapter.setNewData(sorted);
-                 mAdapter.notifyDataSetChanged();
+                Calendar calendar1 = new GregorianCalendar(dateStart.getYear(), dateStart.getMonth(), dateStart.getDayOfMonth());
+                Calendar calendar2 = new GregorianCalendar(dateEnd.getYear(), dateEnd.getMonth(), dateEnd.getDayOfMonth());
+                List<Orders> sorted = orderManage.getSortList(type, calendar1, calendar2);
+                mAdapter.setNewData(sorted);
+                mAdapter.notifyDataSetChanged();
                 customizeDialog.dismiss();
             }
         });
-        ((Button)dialogView.findViewById(R.id.negative)).setText("cancel");
+        ((Button) dialogView.findViewById(R.id.negative)).setText("cancel");
         dialogView.findViewById(R.id.negative).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

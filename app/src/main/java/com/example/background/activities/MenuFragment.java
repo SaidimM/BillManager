@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import com.example.background.*;
-import com.example.background.fragment.*;
+import com.example.background.R;
+import com.example.background.fragment.TabFragment1;
+import com.example.background.fragment.TabFragment2;
+import com.example.background.fragment.TabFragment3;
+import com.example.background.fragment.TabFragment4;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +29,7 @@ public class MenuFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View navView = inflater.inflate(R.layout.activity_menu, container, false);
         mListView = (ListView) navView.findViewById(R.id.menu_list_view);
         mListView.setDivider(null); // 去掉分割线
@@ -49,7 +50,7 @@ public class MenuFragment extends Fragment {
 
         List<Map<String, Object>> listTest = new ArrayList<Map<String, Object>>();
 
-        for(int i = 0; i < data_zh.length; i++){
+        for (int i = 0; i < data_zh.length; i++) {
             Map<String, Object> listItem = new HashMap<String, Object>();
             listItem.put("zh", data_zh[i]);
             listItem.put("en", data_en[i]);
@@ -58,7 +59,7 @@ public class MenuFragment extends Fragment {
 
         // 创建SimpleAdapter
         SimpleAdapter simpleAdapter = new SimpleAdapter(getContext(), listTest, R.layout.item_list_array,
-                new String[] {"zh", "en"}, new int[] {R.id.item_zh, R.id.item_en});
+                new String[]{"zh", "en"}, new int[]{R.id.item_zh, R.id.item_en});
 
         // 为listview设置适配器
         mListView.setAdapter(simpleAdapter);
@@ -72,7 +73,7 @@ public class MenuFragment extends Fragment {
                 MainActivity activity = (MainActivity) getActivity();
                 assert activity != null;
                 DrawerLayout mDrawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
-                mDrawerLayout.closeDrawer(Gravity.START,true);
+                mDrawerLayout.closeDrawer(Gravity.START, true);
                 switch (position) {
                     case 0:
                         activity.replaceFragment(new TabFragment1());

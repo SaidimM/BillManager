@@ -12,16 +12,16 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final SharedPreferences sp = this.getSharedPreferences("login",MODE_PRIVATE);
+        final SharedPreferences sp = this.getSharedPreferences("login", MODE_PRIVATE);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 SystemClock.sleep(3000);
                 //之前登录过，直接进入主界面
-                if (sp.getBoolean("isLogged",false)){
+                if (sp.getBoolean("isLogged", false)) {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                }else {
-                    startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                } else {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 }
             }
         });

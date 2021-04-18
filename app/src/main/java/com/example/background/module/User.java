@@ -13,7 +13,7 @@ public class User extends BaseModel {
     public int id;
 
     @Column               //表示一栏 一列
-    public  String name; //自己需要存储的字段
+    public String name; //自己需要存储的字段
 
     @Column
     public String pass;     //密码

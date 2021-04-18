@@ -1,11 +1,11 @@
 package com.example.background.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import com.example.background.R;
 import com.example.background.module.User;
 
@@ -29,7 +29,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String n = name.getText().toString();
                 String p = pass.getText().toString();
-                if(!n.equals("")||!p.equals("")){
+                if (!n.equals("") || !p.equals("")) {
                     User user = new User();
                     user.name = n;
                     user.pass = p;

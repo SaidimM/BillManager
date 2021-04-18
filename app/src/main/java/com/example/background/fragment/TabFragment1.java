@@ -4,15 +4,15 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.widget.*;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -158,23 +158,23 @@ public class TabFragment1 extends Fragment {
 
     private void initDialog() {
         final AlertDialog customizeDialog = new AlertDialog.Builder(getContext()).create();
-        final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_main,null);
+        final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_main, null);
         customizeDialog.setTitle("add new order");
         customizeDialog.setView(dialogView);
-        ((TextView)dialogView.findViewById(R.id.tv_name)).setText("name");
-        ((TextView)dialogView.findViewById(R.id.tv_cost)).setText("cost");
-        ((TextView)dialogView.findViewById(R.id.tv_dealer)).setText("dealer");
-        ((TextView)dialogView.findViewById(R.id.tv_type)).setText("type");
-        ((TextView)dialogView.findViewById(R.id.tv_date)).setText("date");
-        ((TextView)dialogView.findViewById(R.id.tv_time)).setText("time");
-        ((Button)dialogView.findViewById(R.id.positive)).setText("confirm");
+        ((TextView) dialogView.findViewById(R.id.tv_name)).setText("name");
+        ((TextView) dialogView.findViewById(R.id.tv_cost)).setText("cost");
+        ((TextView) dialogView.findViewById(R.id.tv_dealer)).setText("dealer");
+        ((TextView) dialogView.findViewById(R.id.tv_type)).setText("type");
+        ((TextView) dialogView.findViewById(R.id.tv_date)).setText("date");
+        ((TextView) dialogView.findViewById(R.id.tv_time)).setText("time");
+        ((Button) dialogView.findViewById(R.id.positive)).setText("confirm");
         radioGroup = dialogView.findViewById(R.id.radio_group);
-        for(int i=0;i<8;i++){
+        for (int i = 0; i < 8; i++) {
             final int finalI = i;
-            ((RadioButton)dialogView.findViewById(radios[i])).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ((RadioButton) dialogView.findViewById(radios[i])).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    for(int j = 0;j < 8;j++) ((RadioButton) radioGroup.findViewById(radios[j])).setChecked(false);
+                    for (int j = 0; j < 8; j++) ((RadioButton) radioGroup.findViewById(radios[j])).setChecked(false);
                     ((RadioButton) radioGroup.findViewById(radios[finalI])).setChecked(type != finalI);
                     type = finalI;
                 }
@@ -191,9 +191,9 @@ public class TabFragment1 extends Fragment {
                 name = ((EditText) dialogView.findViewById(R.id.name)).getText().toString();
                 cost = ((EditText) dialogView.findViewById(R.id.cost)).getText().toString();
                 dealer = ((EditText) dialogView.findViewById(R.id.dealer)).getText().toString();
-                date = datePicker.getYear() + "-" + ((Integer)datePicker.getMonth()+1) + "-" + datePicker.getDayOfMonth();
+                date = datePicker.getYear() + "-" + ((Integer) datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
                 time = timePicker.getHour() + ":" + timePicker.getMinute() + ":" + calendar.get(Calendar.SECOND);
-                if(!name.equals("")&&!cost.equals("")){
+                if (!name.equals("") && !cost.equals("")) {
                     order.name = name;
                     order.cash = Float.parseFloat(cost);
                     order.time = date + " " + time;
@@ -207,7 +207,7 @@ public class TabFragment1 extends Fragment {
                 }
             }
         });
-        ((Button)dialogView.findViewById(R.id.negative)).setText("cancel");
+        ((Button) dialogView.findViewById(R.id.negative)).setText("cancel");
         dialogView.findViewById(R.id.negative).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,10 +217,10 @@ public class TabFragment1 extends Fragment {
         customizeDialog.show();
     }
 
-    private String getCost(List<Orders> list){
+    private String getCost(List<Orders> list) {
         float sum = 0;
         for (Orders orders : list) sum += orders.cash;
-        return (new BigDecimal(sum)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() +"";
+        return (new BigDecimal(sum)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "";
     }
 
 }

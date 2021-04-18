@@ -2,12 +2,12 @@ package com.example.background.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import com.example.background.R;
 import com.example.background.module.User;
 import com.example.background.module.User_Table;
@@ -18,8 +18,6 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private EditText name;
     private EditText pass;
-    private Button sign;
-    private Button login;
     private User user;
 
     private static final int REQUESTCODE = 111;
@@ -32,37 +30,39 @@ public class LoginActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name);
         pass = findViewById(R.id.pass);
-        sign = findViewById(R.id.new_user);
-        login = findViewById(R.id.login);
-        sp = this.getSharedPreferences("login",MODE_PRIVATE);
+        Button sign = findViewById(R.id.new_user);
+        Button login = findViewById(R.id.login);
+        sp = this.getSharedPreferences("login", MODE_PRIVATE);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String n = name.getText().toString();
                 String p = pass.getText().toString();
-                if(!n.equals("")||!p.equals("")){
+                if (!n.equals("") || !p.equals("")) {
                     user = new Select()
                             .from(User.class)
                             .where(User_Table.name.is(n))
                             .querySingle();
-                    if(p.equals(user.pass)){
-                        SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("name" , n);
-                        ed.putString("portrait",user.portrait);
-                        ed.putBoolean("isLogged",true);
-                        ed.commit();
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    if (user == null) {
+                        Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                    else Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
-                }
-                else Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
+                    if (p.equals(user.pass)) {
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("name", n);
+                        ed.putString("portrait", user.portrait);
+                        ed.putBoolean("isLogged", true);
+                        ed.commit();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    } else Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
             }
         });
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(LoginActivity.this,SignInActivity.class),REQUESTCODE);
+                startActivityForResult(new Intent(LoginActivity.this, SignInActivity.class), REQUESTCODE);
             }
         });
     }

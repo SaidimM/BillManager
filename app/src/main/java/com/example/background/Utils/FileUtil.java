@@ -10,16 +10,13 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import androidx.annotation.RequiresApi;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
+import java.io.*;
 
 public class FileUtil {
     /**
      * 根据URI获取文件真实路径（兼容多张机型）
+     *
      * @param context
      * @param uri
      * @return
@@ -74,7 +71,7 @@ public class FileUtil {
             } else if (isDownloadsDocument(uri)) { // DownloadsProvider
                 Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(documentId));
                 filePath = getDataColumn(context, contentUri, null, null);
-            }else if (isExternalStorageDocument(uri)) {
+            } else if (isExternalStorageDocument(uri)) {
                 // ExternalStorageProvider
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -82,7 +79,7 @@ public class FileUtil {
                 if ("primary".equalsIgnoreCase(type)) {
                     filePath = Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-            }else {
+            } else {
                 //Log.e("路径错误");
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
@@ -154,7 +151,7 @@ public class FileUtil {
     public static void copyFileByStream(File source, File dest) throws
             IOException {
         try (InputStream is = new FileInputStream(source);
-             OutputStream os = new FileOutputStream(dest);){
+             OutputStream os = new FileOutputStream(dest);) {
             byte[] buffer = new byte[1024];
             int length;
             while ((length = is.read(buffer)) > 0) {

@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,14 +14,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.background.R;
 import com.example.background.Utils.OrderManage;
-import com.example.background.activities.MainActivity;
 import com.example.background.module.Orders;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.*;
-import lecho.lib.hellocharts.view.PieChartView;
 import lecho.lib.hellocharts.view.LineChartView;
+import lecho.lib.hellocharts.view.PieChartView;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -79,17 +80,17 @@ public class TabFragment2 extends Fragment {
 
     private static final List<Integer> monthList = Arrays.asList
             (R.id.January,
-            R.id.February,
-            R.id.March,
-            R.id.April,
-            R.id.May,
-            R.id.June,
-            R.id.July,
-            R.id.August,
-            R.id.September,
-            R.id.October,
-            R.id.November,
-            R.id.December);
+                    R.id.February,
+                    R.id.March,
+                    R.id.April,
+                    R.id.May,
+                    R.id.June,
+                    R.id.July,
+                    R.id.August,
+                    R.id.September,
+                    R.id.October,
+                    R.id.November,
+                    R.id.December);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -120,8 +121,8 @@ public class TabFragment2 extends Fragment {
         btnMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!popup.isShowing()) {
-                    popup.showAtLocation(btnMonth, Gravity.CENTER,0,0);
+                if (!popup.isShowing()) {
+                    popup.showAtLocation(btnMonth, Gravity.CENTER, 0, 0);
                 }
             }
         });
@@ -314,8 +315,8 @@ public class TabFragment2 extends Fragment {
     private void initPopupWindow() {
         View v = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(
                 R.layout.menu_month_select, null);
-        popup = new PopupWindow(v, WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.MATCH_PARENT , true);
-        for(int i = 0; i < monthList.size(); i++){
+        popup = new PopupWindow(v, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
+        for (int i = 0; i < monthList.size(); i++) {
             v.findViewById(monthList.get(i)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View button) {

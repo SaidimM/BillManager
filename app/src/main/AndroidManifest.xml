@@ -19,8 +19,6 @@
             tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activities.PickActivity">
         </activity>
-        <activity android:name=".activities.FancyActivity">
-        </activity>
         <activity android:name=".activities.SignInActivity">
         </activity>
         <activity

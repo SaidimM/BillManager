@@ -1,9 +1,5 @@
 package com.example.background.activities;
 
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +11,10 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -25,7 +25,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.background.R;
 import com.example.background.Utils.FileUtil;
 import com.zhy.base.fileprovider.FileProvider7;
+
 import java.io.File;
+
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class UserActivity extends AppCompatActivity {
@@ -42,13 +44,13 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        userImage=findViewById(R.id.userImage);
-        if(MainActivity.user.portrait != null) Glide.with(UserActivity.this)
+        userImage = findViewById(R.id.userImage);
+        if (MainActivity.user.portrait != null) Glide.with(UserActivity.this)
                 .load(MainActivity.user.portrait)
                 .into(userImage);
         TextView name = findViewById(R.id.name);
         name.setText(MainActivity.user.name);
-        userLayout=findViewById(R.id.userLayout);
+        userLayout = findViewById(R.id.userLayout);
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +97,7 @@ public class UserActivity extends AppCompatActivity {
             }
         }
     }
+
     private void takePhoto() {
         Intent intentToTakePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File fileDir = new File(Environment.getExternalStorageDirectory() + File.separator + "photoTest" + File.separator);
@@ -110,7 +113,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     /**
-     权限申请结果回调
+     * 权限申请结果回调
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
