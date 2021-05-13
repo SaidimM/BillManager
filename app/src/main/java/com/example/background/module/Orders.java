@@ -28,4 +28,14 @@ public class Orders extends BaseModel {
     @Column
     public int type;
 
+    public Orders() {
+    }
+
+    public Orders(String time, String dealer, String name, float cash, int type) {
+        this.time = time;
+        this.dealer = dealer;
+        this.name = name;
+        this.cash = cash;
+        this.type = type;
+    }
 }

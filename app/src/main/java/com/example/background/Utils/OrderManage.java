@@ -45,7 +45,7 @@ public class OrderManage {
     public OrderManage() {
         calendar = new GregorianCalendar();
         tempCalendar = Calendar.getInstance();
-        format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
+        format = new SimpleDateFormat("yyyy-M-d HH:mm:ss",Locale.CHINA);
         format.setTimeZone(zone);
         calendar = new GregorianCalendar();
         totalOrders = new Select().from(Orders.class).queryList();
@@ -55,7 +55,7 @@ public class OrderManage {
     public OrderManage(int month) {
         calendar = new GregorianCalendar();
         tempCalendar = Calendar.getInstance();
-        format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
+        format = new SimpleDateFormat("yyyy-M-d HH:mm:ss", Locale.CHINA);
         format.setTimeZone(zone);
         totalOrders = new Select().from(Orders.class).queryList();
         costOfMonth = this.getOrders(month);
@@ -111,7 +111,7 @@ public class OrderManage {
     public float[] getScoreList(List<Orders> list) {
         float[] score = {0, 0, 0, 0, 0};
         tempCalendar = Calendar.getInstance();
-        format = new SimpleDateFormat("yyyy-M-d HH:mm:ss");
+        format = new SimpleDateFormat("yyyy-M-d HH:mm:ss", Locale.CHINA);
         format.setTimeZone(zone);
         Date date;
         try {

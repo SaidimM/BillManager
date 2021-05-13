@@ -24,7 +24,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.background.R;
 import com.example.background.Utils.FileUtil;
-import com.zhy.base.fileprovider.FileProvider7;
 
 import java.io.File;
 
@@ -67,6 +66,7 @@ public class UserActivity extends AppCompatActivity {
         userLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (filePath.equals("")) return;
                 MainActivity.user.portrait = filePath;
                 MainActivity.user.save();
                 finish();
@@ -98,20 +98,6 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
-    private void takePhoto() {
-        Intent intentToTakePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File fileDir = new File(Environment.getExternalStorageDirectory() + File.separator + "photoTest" + File.separator);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
-        }
-
-        File photoFile = new File(fileDir, "photo.jpeg");
-        mTempPhotoPath = photoFile.getAbsolutePath();
-        imageUri = FileProvider7.getUriForFile(this, photoFile);
-        intentToTakePhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intentToTakePhoto, RC_TAKE_PHOTO);
-    }
-
     /**
      * 权限申请结果回调
      */
@@ -120,7 +106,7 @@ public class UserActivity extends AppCompatActivity {
         switch (requestCode) {
             case RC_TAKE_PHOTO:   //拍照权限申请返回
                 if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    takePhoto();
+
                 }
                 break;
             case RC_CHOOSE_PHOTO:   //相册选择照片权限申请返回

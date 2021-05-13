@@ -12,7 +12,7 @@
             android:layout_height="50dp"
             android:text="@string/month"
             android:textAllCaps="false"
-            android:background="@color/colorTransparent"
+            android:background="@color/transparent"
             android:textAlignment="viewStart"
             android:paddingStart="10dp"
             android:textSize="25sp"

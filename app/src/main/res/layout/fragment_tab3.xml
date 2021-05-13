@@ -24,7 +24,7 @@
                 android:autofillHints=""/>
         <ImageButton
                 android:id="@+id/sort"
-                android:background="@color/colorTransparent"
+                android:background="@color/transparent"
                 android:src="@drawable/ic_sort"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -36,7 +36,6 @@
     <androidx.recyclerview.widget.RecyclerView
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="50dp"
-            android:layout_marginStart="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/recycler"/>

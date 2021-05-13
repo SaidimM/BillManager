@@ -8,7 +8,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        
         android:layout_marginTop="40dp"
         android:src="@mipmap/ic_boy"
         android:id="@+id/user_image"/>
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/user"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        
         android:layout_marginTop="20dp"
         android:id="@+id/name">
     </TextView>

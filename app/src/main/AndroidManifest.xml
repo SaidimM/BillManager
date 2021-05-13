@@ -10,17 +10,21 @@
             tools:ignore="ProtectedPermissions"/>
 
     <application
-            android:name=".AppManager"
-            android:icon="@mipmap/ic_launcher"
-            android:requestLegacyExternalStorage="true"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:name=".MyApplication"
+            android:allowBackup="false"
+            android:icon="@drawable/ic_wallet"
+            android:label="@string/appName"
+            android:roundIcon="@drawable/ic_wallet"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.PickActivity">
+            android:theme="@style/AppTheme">
+        <activity android:name=".activities.ChooseFileActivity">
         </activity>
-        <activity android:name=".activities.SignInActivity">
-        </activity>
+        <activity
+                android:name=".activities.PickActivity"
+                android:theme="@style/AppTheme"/>
+        <activity
+                android:name=".activities.SignInActivity"
+                android:theme="@style/BaseTheme"/>
         <activity
                 android:name=".activities.SplashActivity"
                 android:launchMode="singleTop"
@@ -31,11 +35,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity">
-        </activity>
-        <activity android:name=".activities.UserActivity"/>
-        <activity android:name=".activities.MainActivity">
-        </activity>
+        <activity
+                android:name=".activities.LoginActivity"
+                android:theme="@style/BaseTheme"/>
+        <activity
+                android:name=".activities.UserActivity"
+                android:theme="@style/BaseTheme"/>
+        <activity
+                android:name=".activities.MainActivity"
+                android:launchMode="singleTask"
+                android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

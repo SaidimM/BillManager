@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class TabFragment1 extends Fragment {
+public class TabFragment1 extends BaseFragment {
     private AddFloatingActionButton add;
     private View view;
     private TextView month;

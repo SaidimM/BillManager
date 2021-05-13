@@ -26,7 +26,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 
-public class TabFragment2 extends Fragment {
+public class TabFragment2 extends BaseFragment {
     private View view;
     private Button btnMonth;
     private PieChartView pieChart;
@@ -100,7 +100,8 @@ public class TabFragment2 extends Fragment {
         return view;
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
         typeList = view.findViewById(R.id.list_type);
         orderList = view.findViewById(R.id.orders);
         btnMonth = view.findViewById(R.id.month);

@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class MenuFragment extends Fragment {
 
-    private ListView mListView;
+    public ListView mListView;
 
 
     @Override

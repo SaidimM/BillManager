@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_between_items">4dp</dimen>
+    <dimen name="item_to_edge">16dp</dimen>
+    <dimen name="item_padding_horizontal">12dp</dimen>
+    <dimen name="item_padding_vertical">8dp</dimen>
+
+    <dimen name="space_10">10dp</dimen>
+    <dimen name="space_20">10dp</dimen>
+    <dimen name="space_30">10dp</dimen>
+    <dimen name="space_40">10dp</dimen>
+    <dimen name="space_50">10dp</dimen>
+    <dimen name="space_60">10dp</dimen>
+
+    <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+</resources>

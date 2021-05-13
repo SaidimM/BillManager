@@ -2,6 +2,7 @@ package com.example.background.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.background.R;
+import com.example.background.Utils.JxlRead;
+
+import java.io.File;
 
 public class PickActivity extends AppCompatActivity {
 
@@ -28,6 +32,7 @@ public class PickActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick);
         pick = findViewById(R.id.pick);
+        path = "";
         initView();
     }
 
@@ -62,6 +67,9 @@ public class PickActivity extends AppCompatActivity {
                 Toast.makeText(this, path + "222222", Toast.LENGTH_SHORT).show();
             }
         }
+        if (!path.equals("")){
+            new Thread(() -> JxlRead.readCsvFile(path)).start();
+        }
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -75,6 +83,23 @@ public class PickActivity extends AppCompatActivity {
             cursor.close();
         }
         return res;
+    }
+
+    public static String getPathByUri(Context context, Uri data) {
+        String filename=null;
+        if (data.getScheme().toString().compareTo("content") == 0) {
+            Cursor cursor = context.getContentResolver().query(data, new String[] { "_data" }, null, null, null);
+            if (cursor.moveToFirst()) {
+                filename = cursor.getString(0);
+            }
+        } else if (data.getScheme().toString().compareTo("file") == 0) {// file:///开头的uri
+            filename = data.toString();
+            filename = data.toString().replace("file://", "");// 替换file://
+            if (!filename.startsWith("/mnt")) {// 加上"/mnt"头
+                filename += "/mnt";
+            }
+        }
+        return filename;
     }
 
     /**
