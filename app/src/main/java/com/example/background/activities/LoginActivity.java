@@ -34,30 +34,27 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.login);
         sp = this.getSharedPreferences("login", MODE_PRIVATE);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String n = name.getText().toString();
-                String p = pass.getText().toString();
-                if (!n.equals("") || !p.equals("")) {
-                    user = new Select()
-                            .from(User.class)
-                            .where(User_Table.name.is(n))
-                            .querySingle();
-                    if (user == null) {
-                        Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (p.equals(user.pass)) {
-                        SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("name", n);
-                        ed.putString("portrait", user.portrait);
-                        ed.putBoolean("isLogged", true);
-                        ed.commit();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    } else Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
-            }
+        login.setOnClickListener(view -> {
+            String n = name.getText().toString();
+            String p = pass.getText().toString();
+            if (!n.equals("") || !p.equals("")) {
+                user = new Select()
+                        .from(User.class)
+                        .where(User_Table.name.is(n))
+                        .querySingle();
+                if (user == null) {
+                    Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (p.equals(user.pass)) {
+                    SharedPreferences.Editor ed = sp.edit();
+                    ed.putString("name", n);
+                    ed.putString("portrait", user.portrait);
+                    ed.putBoolean("isLogged", true);
+                    ed.commit();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
         });
         sign.setOnClickListener(new View.OnClickListener() {
             @Override

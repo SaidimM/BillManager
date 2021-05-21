@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="space_between_items">4dp</dimen>
+    <dimen name="height_of_Appbar">56dp</dimen>
+    <dimen name="size_of_floating_button">56dp</dimen>
+    <dimen name="size_of_icon">48dp</dimen>
+    <dimen name="drawer_to_right">56dp</dimen>
+    <dimen name="space_between_items">6dp</dimen>
     <dimen name="item_to_edge">16dp</dimen>
+    <dimen name="margin">16dp</dimen>
     <dimen name="item_padding_horizontal">12dp</dimen>
     <dimen name="item_padding_vertical">8dp</dimen>
+    <dimen name="text_start_alignment">72dp</dimen>
 
     <dimen name="space_10">10dp</dimen>
     <dimen name="space_20">10dp</dimen>

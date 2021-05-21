@@ -35,7 +35,7 @@ public class UserActivity extends AppCompatActivity {
     private String mTempPhotoPath;
     private Uri imageUri;
     private ConstraintLayout userLayout;
-    private String filePath;
+    private String filePath = "";
     private ImageView userImage;
 
     @Override
@@ -50,27 +50,22 @@ public class UserActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.name);
         name.setText(MainActivity.user.name);
         userLayout = findViewById(R.id.userLayout);
-        userImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(UserActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    //未授权，申请授权(从相册选择图片需要读取存储卡的权限)
-                    ActivityCompat.requestPermissions(UserActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RC_CHOOSE_PHOTO);
-                } else {
-                    //已授权，获取照片
-                    choosePhoto();
-                }
+        userImage.setOnClickListener(view -> {
+            if (ContextCompat.checkSelfPermission(UserActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //未授权，申请授权(从相册选择图片需要读取存储卡的权限)
+                ActivityCompat.requestPermissions(UserActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RC_CHOOSE_PHOTO);
+            } else {
+                //已授权，获取照片
+                choosePhoto();
             }
         });
 
-        userLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (filePath.equals("")) return;
+        userLayout.setOnClickListener(view -> {
+            if (!filePath.equals("") ) {
                 MainActivity.user.portrait = filePath;
                 MainActivity.user.save();
-                finish();
             }
+            finish();
         });
     }
 
@@ -93,7 +88,7 @@ public class UserActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(filePath)) {
                 RequestOptions requestOptions1 = new RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
                 //将照片显示在 ivImage上
-                Glide.with(UserActivity.this).load(filePath).transition(withCrossFade()).into(userImage);
+                Glide.with(UserActivity.this).load(filePath).apply(RequestOptions.placeholderOf(R.drawable.ic_user)).transition(withCrossFade()).into(userImage);
             }
         }
     }

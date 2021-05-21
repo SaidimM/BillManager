@@ -26,4 +26,6 @@
     <string name="no_data">no data</string>
     <string name="_2019_09_21">2019-09-21</string>
     <string name="kb">KB</string>
+    <string name="yes">yes</string>
+    <string name="cancel">cancel</string>
 </resources>

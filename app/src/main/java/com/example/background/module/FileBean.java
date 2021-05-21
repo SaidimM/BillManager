@@ -3,22 +3,38 @@ package com.example.background.module;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
+import com.example.background.Database.DBFlowDataBase;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
  *
  */
-public class FileInfo implements Parcelable {
-    private String fileName;
-    private String filePath;
-    private long fileSize;
-    private String time;
-    private boolean isSelect;
+@Table(database = DBFlowDataBase.class)
+public class FileBean extends BaseModel implements Parcelable {
+    @PrimaryKey(autoincrement = true)
+    private int id;
+    @Column private String fileName;
+    @Column private String filePath;
+    @Column private long fileSize;
+    @Column private String time;
+    @Column private boolean isSelect;
 
-    public boolean isSelect() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean getIsSelect() {
         return isSelect;
     }
 
-    public void setSelect(boolean select) {
+    public void setIsSelect(boolean select) {
         isSelect = select;
     }
 
@@ -68,25 +84,25 @@ public class FileInfo implements Parcelable {
         dest.writeString(this.time);
     }
 
-    public FileInfo() {
+    public FileBean() {
     }
 
-    protected FileInfo(Parcel in) {
+    protected FileBean(Parcel in) {
         this.fileName = in.readString();
         this.filePath = in.readString();
         this.fileSize = in.readLong();
         this.time = in.readString();
     }
 
-    public static final Parcelable.Creator<FileInfo> CREATOR = new Parcelable.Creator<FileInfo>() {
+    public static final Parcelable.Creator<FileBean> CREATOR = new Parcelable.Creator<FileBean>() {
         @Override
-        public FileInfo createFromParcel(Parcel source) {
-            return new FileInfo(source);
+        public FileBean createFromParcel(Parcel source) {
+            return new FileBean(source);
         }
 
         @Override
-        public FileInfo[] newArray(int size) {
-            return new FileInfo[size];
+        public FileBean[] newArray(int size) {
+            return new FileBean[size];
         }
     };
 

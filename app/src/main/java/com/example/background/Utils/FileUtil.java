@@ -11,7 +11,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import androidx.annotation.RequiresApi;
-import com.example.background.module.FileInfo;
+import com.example.background.module.FileBean;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -182,19 +182,20 @@ public class FileUtil {
 
 
 
-    public static FileInfo getFileInfoFromFile(File file) {
-        FileInfo fileInfo = new FileInfo();
-        fileInfo.setFileName(file.getName());
-        fileInfo.setFilePath(file.getPath());
-        fileInfo.setFileSize(file.length());
+    public static FileBean getFileInfoFromFile(File file) {
+        FileBean fileBean = new FileBean();
+        fileBean.setFileName(file.getName());
+        fileBean.setFilePath(file.getPath());
+        fileBean.setFileSize(file.length());
+        fileBean.setIsSelect(true);
 //        fileInfo.setDirectory(file.isDirectory());
-        fileInfo.setTime(getFileLastModifiedTime(file));
+        fileBean.setTime(getFileLastModifiedTime(file));
         int lastDotIndex = file.getName().lastIndexOf(".");
         if (lastDotIndex > 0) {
             String fileSuffix = file.getName().substring(lastDotIndex + 1);
 //            fileInfo.setSuffix(fileSuffix);
         }
-        return fileInfo;
+        return fileBean;
     }
 
     public static String FormatFileSize(long fileS) {

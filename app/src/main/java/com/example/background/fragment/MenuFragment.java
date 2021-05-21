@@ -1,4 +1,4 @@
-package com.example.background.activities;
+package com.example.background.fragment;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,10 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import com.example.background.R;
-import com.example.background.fragment.TabFragment1;
-import com.example.background.fragment.TabFragment2;
-import com.example.background.fragment.TabFragment3;
-import com.example.background.fragment.TabFragment4;
+import com.example.background.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,33 +63,12 @@ public class MenuFragment extends Fragment {
     }
 
     public void clickEvents() {
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MainActivity activity = (MainActivity) getActivity();
-                assert activity != null;
-                DrawerLayout mDrawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
-                mDrawerLayout.closeDrawer(Gravity.START, true);
-                switch (position) {
-                    case 0:
-                        activity.replaceFragment(new TabFragment1());
-                        break;
-                    case 1:
-                        activity.replaceFragment(new TabFragment2());
-                        break;
-                    case 2:
-                        activity.replaceFragment(new TabFragment3());
-                        break;
-                    case 3:
-                    case 4:
-                        activity.replaceFragment(new TabFragment4());
-                        break;
-                    default:
-                        break;
-                }
-            }
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            MainActivity activity = (MainActivity) getActivity();
+            assert activity != null;
+            DrawerLayout mDrawerLayout = activity.findViewById(R.id.drawer_layout);
+            mDrawerLayout.closeDrawer(Gravity.START, true);
+            activity.replaceFragment(position);
         });
-
     }
 }

@@ -4,6 +4,7 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:orientation="vertical"
+        android:paddingTop="56dp"
         android:layout_height="match_parent">
     <FrameLayout
             android:id="@+id/animation_container"
@@ -20,7 +21,6 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"

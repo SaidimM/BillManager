@@ -4,17 +4,16 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Toast;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.background.R;
-import com.example.background.Utils.OrderManage;
-import com.example.background.module.Orders;
+import com.example.background.Utils.BillManage;
+import com.example.background.module.Bill;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
@@ -26,14 +25,13 @@ import java.math.BigDecimal;
 import java.util.*;
 
 
-public class TabFragment2 extends BaseFragment {
+public class StatisticsFragment extends BaseFragment {
     private View view;
-    private Button btnMonth;
     private PieChartView pieChart;
     private LineChartView lineChart;
     private List<SliceValue> sliceList = new ArrayList<>();
     private RecyclerView typeList, orderList;
-    private OrderManage orderManage;
+    private BillManage billManage;
     private PopupWindow popup;
     private Calendar calendar;
     private int numOfMonth;
@@ -102,37 +100,33 @@ public class TabFragment2 extends BaseFragment {
 
     @Override
     public void initView() {
+        toolbar.setBackgroundColor(Color.parseColor(primaryColor));
         typeList = view.findViewById(R.id.list_type);
-        orderList = view.findViewById(R.id.orders);
-        btnMonth = view.findViewById(R.id.month);
+        orderList = view.findViewById(R.id.bill);
         pieChart = view.findViewById(R.id.pie);
         lineChart = view.findViewById(R.id.line);
-        orderManage = new OrderManage();
+        billManage = new BillManage(bills);
         numOfMonth = calendar.get(Calendar.MONTH);
-        btnMonth.setText(monthsName[numOfMonth]);
+        toolbar.setTitle(monthsName[numOfMonth]);
 
-        List<Orders> list = orderManage.getMonthOrders();
+        List<Bill> list = billManage.getMonthOrders();
         getAxisXLables();
         getAxisPoints(list);
         initLineChart(list);
         initPieChart(list);
         initRecycler(list);
         initPopupWindow();
-
-        btnMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!popup.isShowing()) {
-                    popup.showAtLocation(btnMonth, Gravity.CENTER, 0, 0);
-                }
+        toolbar.setOnClickListener(v -> {
+            if (!popup.isShowing()) {
+                popup.showAtLocation(toolbar, Gravity.CENTER, 0, 0);
             }
         });
     }
 
     private void initData(int month) {
-        btnMonth.setText(monthsName[numOfMonth]);
-        orderManage = new OrderManage(month);
-        List<Orders> list = orderManage.getMonthOrders();
+        toolbar.setTitle(monthsName[numOfMonth]);
+        billManage = new BillManage(bills,month);
+        List<Bill> list = billManage.getMonthOrders();
         getAxisXLables();
         getAxisPoints(list);
         initLineChart(list);
@@ -146,16 +140,16 @@ public class TabFragment2 extends BaseFragment {
         }
     }
 
-    private void getAxisPoints(List<Orders> list) {
+    private void getAxisPoints(List<Bill> list) {
         mPointValues = new ArrayList<>();
-        float[] score = orderManage.getScoreList(list);
+        float[] score = billManage.getScoreList(list);
         for (int i = 0; i < score.length; i++) {
             // 构造函数传参 位置 值
             mPointValues.add(new PointValue(i, score[i]));
         }
     }
 
-    private void initLineChart(List<Orders> list) {
+    private void initLineChart(List<Bill> list) {
         // 折线对象 传参数为点的集合对象   y轴值的范围自动生成 根据坐标的y值 不必自己准备数据
         Line line = new Line(mPointValues).setColor(Color.parseColor("#008080"));  //折线的颜色（橙色）
         List<Line> lines = new ArrayList<Line>();
@@ -223,7 +217,7 @@ public class TabFragment2 extends BaseFragment {
         lineChart.setCurrentViewport(v);
     }
 
-    private void initPieChart(List<Orders> list) {
+    private void initPieChart(List<Bill> list) {
         pieChart.setViewportCalculationEnabled(true);//设置饼图自动适应大小
         pieChart.setChartRotation(360, true);//设置饼图旋转角度，且是否为动画
         pieChart.setChartRotationEnabled(false);//设置饼图是否可以手动旋转
@@ -234,7 +228,7 @@ public class TabFragment2 extends BaseFragment {
         pd.setHasCenterCircle(true);//设置饼图中间是否有第二个圈
         pd.setCenterCircleColor(Color.WHITE);//设置饼图中间圈的颜色
         pd.setCenterCircleScale((float) 0.75);////设置第二个圈的大小比例
-        pd.setCenterText1(orderManage.getCostOfMonth());//设置文本
+        pd.setCenterText1(billManage.getCostOfMonth());//设置文本
         pd.setCenterText1Color(Color.GRAY);//设置文本颜色
         pd.setCenterText1FontSize(20);//设置文本大小
 //        pd.setCenterText1Typeface();//设置文本字体
@@ -249,13 +243,13 @@ public class TabFragment2 extends BaseFragment {
         pieChart.setPieChartData(pd);//将数据设置给饼图
     }
 
-    private List<SliceValue> getTypeList(List<Orders> list) {
+    private List<SliceValue> getTypeList(List<Bill> list) {
         int[] values = new int[8];
         sliceList = new ArrayList<>();
         int type = 0;
-        for (Orders order : list) {
-            type = order.type;
-            values[type] += (new BigDecimal(order.cash)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        for (Bill order : list) {
+            type = order.getType();
+            values[type] += (BigDecimal.valueOf(order.getCash())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         }
         for (int i = 0; i < 8; i++) {//循环为饼图设置数据
             sliceList.add(new SliceValue(values[i], colors[i]).setLabel(types[i]));
@@ -263,8 +257,8 @@ public class TabFragment2 extends BaseFragment {
         return sliceList;
     }
 
-    private void initRecycler(List<Orders> list) {
-        BaseQuickAdapter<Orders, BaseViewHolder> ordersAdapter;
+    private void initRecycler(List<Bill> list) {
+        BaseQuickAdapter<Bill, BaseViewHolder> ordersAdapter;
         BaseQuickAdapter<SliceValue, BaseViewHolder> typeAdapter;
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
@@ -285,14 +279,14 @@ public class TabFragment2 extends BaseFragment {
         layoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
         orderList.setLayoutManager(layoutManager2);
         orderList.setNestedScrollingEnabled(false);
-        ordersAdapter = new BaseQuickAdapter<Orders, BaseViewHolder>(R.layout.item_orders, sort(list)) {
+        ordersAdapter = new BaseQuickAdapter<Bill, BaseViewHolder>(R.layout.item_orders, sort(list)) {
             @Override
-            protected void convert(BaseViewHolder helper, Orders item) {
-                helper.setBackgroundColor(R.id.color, colors[item.type]);
-                helper.setText(R.id.name, item.name);
-                helper.setText(R.id.dealer, item.dealer);
-                helper.setText(R.id.time, item.time);
-                helper.setText(R.id.cash, item.cash + "");
+            protected void convert(BaseViewHolder helper, Bill item) {
+                helper.setBackgroundColor(R.id.color, colors[item.getType()]);
+                helper.setText(R.id.name, item.getName());
+                helper.setText(R.id.dealer, item.getDealer());
+                helper.setText(R.id.time, item.getTime());
+                helper.setText(R.id.cash, item.getCash() + "");
             }
         };
         //一行代码开启动画 默认CUSTOM动画
@@ -300,11 +294,11 @@ public class TabFragment2 extends BaseFragment {
         orderList.setAdapter(ordersAdapter);
     }
 
-    public List<Orders> sort(List<Orders> list) {
+    public List<Bill> sort(List<Bill> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 0; j < list.size() - 1 - i; j++) {
-                if (list.get(j).cash < list.get(j + 1).cash) {
-                    Orders temp = list.get(j);
+                if (list.get(j).getCash() < list.get(j + 1).getCash()) {
+                    Bill temp = list.get(j);
                     list.set(j, list.get(j + 1));
                     list.set(j + 1, temp);
                 }
@@ -318,15 +312,13 @@ public class TabFragment2 extends BaseFragment {
                 R.layout.menu_month_select, null);
         popup = new PopupWindow(v, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
         for (int i = 0; i < monthList.size(); i++) {
-            v.findViewById(monthList.get(i)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View button) {
-                    numOfMonth = monthList.indexOf(button.getId());
-                    initData(numOfMonth);
-                    popup.dismiss();
-                }
+            v.findViewById(monthList.get(i)).setOnClickListener(button -> {
+                numOfMonth = monthList.indexOf(button.getId());
+                initData(numOfMonth);
+                popup.dismiss();
             });
         }
+        v.findViewById(R.id.popup_back).setOnClickListener(v1 -> popup.dismiss());
         popup.setFocusable(true);
         //该属性设置为true则你在点击屏幕的空白位置也会退出
         popup.setTouchable(true);

@@ -17,11 +17,6 @@
             android:roundIcon="@drawable/ic_wallet"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.ChooseFileActivity">
-        </activity>
-        <activity
-                android:name=".activities.PickActivity"
-                android:theme="@style/AppTheme"/>
         <activity
                 android:name=".activities.SignInActivity"
                 android:theme="@style/BaseTheme"/>
@@ -37,14 +32,15 @@
         </activity>
         <activity
                 android:name=".activities.LoginActivity"
-                android:theme="@style/BaseTheme"/>
+                android:launchMode="singleTask"
+                android:theme="@style/LunchTheme"/>
         <activity
                 android:name=".activities.UserActivity"
                 android:theme="@style/BaseTheme"/>
         <activity
                 android:name=".activities.MainActivity"
                 android:launchMode="singleTask"
-                android:theme="@style/AppTheme"/>
+                android:theme="@style/LunchTheme"/>
     </application>
 
 </manifest>

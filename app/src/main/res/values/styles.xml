@@ -7,7 +7,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="LunchTheme" parent="AppTheme">
+    <style name="LunchTheme" parent="Theme.MaterialComponents.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowAnimationStyle">@style/activity_fade</item>
