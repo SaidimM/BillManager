@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 

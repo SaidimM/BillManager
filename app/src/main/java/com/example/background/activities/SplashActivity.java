@@ -27,11 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 //之前登录过，直接进入主界面
-                if (sp.getBoolean("isLogged", false)) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                } else {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                }
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }

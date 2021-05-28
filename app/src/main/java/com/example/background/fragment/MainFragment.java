@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.background.R;
 import com.example.background.Utils.BillManage;
+import com.example.background.Utils.SPUtils;
 import com.example.background.activities.MainActivity;
 import com.example.background.module.Bill;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
@@ -121,7 +122,7 @@ public class MainFragment extends BaseFragment {
     }
 
     public void initData() {
-        Glide.with(this).load(MainActivity.user.portrait).transition(withCrossFade()).into(imageView);
+        Glide.with(this).load(SPUtils.getImagePath()).transition(withCrossFade()).into(imageView);
         billManage = new BillManage(bills);
         calendar = new GregorianCalendar();
         format = new SimpleDateFormat("yyyy-M-d HH:mm:ss", Locale.CHINA);
@@ -227,6 +228,6 @@ public class MainFragment extends BaseFragment {
         super.onResume();
         initToolbar();
         add.setColorNormal(Color.parseColor(accentColor));
-        Glide.with(this).load(MainActivity.user.portrait).transition(withCrossFade()).into(imageView);
+        Glide.with(this).load(SPUtils.getImagePath()).transition(withCrossFade()).into(imageView);
     }
 }

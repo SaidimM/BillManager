@@ -24,6 +24,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.background.R;
 import com.example.background.Utils.FileUtil;
+import com.example.background.Utils.SPUtils;
 
 import java.io.File;
 
@@ -32,8 +33,6 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 public class UserActivity extends AppCompatActivity {
     public static final int RC_CHOOSE_PHOTO = 2;
     public static final int RC_TAKE_PHOTO = 1;
-    private String mTempPhotoPath;
-    private Uri imageUri;
     private ConstraintLayout userLayout;
     private String filePath = "";
     private ImageView userImage;
@@ -44,11 +43,10 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         userImage = findViewById(R.id.userImage);
-        if (MainActivity.user.portrait != null) Glide.with(UserActivity.this)
-                .load(MainActivity.user.portrait)
+        Glide.with(UserActivity.this)
+                .load(SPUtils.getImagePath())
+                .apply(RequestOptions.placeholderOf(R.drawable.main_back_pic))
                 .into(userImage);
-        TextView name = findViewById(R.id.name);
-        name.setText(MainActivity.user.name);
         userLayout = findViewById(R.id.userLayout);
         userImage.setOnClickListener(view -> {
             if (ContextCompat.checkSelfPermission(UserActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -61,9 +59,9 @@ public class UserActivity extends AppCompatActivity {
         });
 
         userLayout.setOnClickListener(view -> {
+            if (filePath == null) finish();
             if (!filePath.equals("") ) {
-                MainActivity.user.portrait = filePath;
-                MainActivity.user.save();
+                SPUtils.setImagePath(filePath);
             }
             finish();
         });
@@ -84,11 +82,12 @@ public class UserActivity extends AppCompatActivity {
             assert data != null;
             Uri uri = data.getData();
             filePath = FileUtil.getFilePathByUri(this, uri);
-
             if (!TextUtils.isEmpty(filePath)) {
-                RequestOptions requestOptions1 = new RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+                SPUtils.setImagePath(filePath);
                 //将照片显示在 ivImage上
-                Glide.with(UserActivity.this).load(filePath).apply(RequestOptions.placeholderOf(R.drawable.ic_user)).transition(withCrossFade()).into(userImage);
+                Glide.with(UserActivity.this).load(filePath)
+                        .apply(RequestOptions.placeholderOf(R.drawable.main_back_pic))
+                        .transition(withCrossFade()).into(userImage);
             }
         }
     }
