@@ -5,7 +5,6 @@
     <string name="bills">My Bills</string>
     <string name="day">day</string>
     <string name="month">Month</string>
-    <string name="cost">cost</string>
     <string name="earn">earn</string>
     <string name="image">image</string>
     <string name="week">week</string>
@@ -20,7 +19,6 @@
     <string name="sort">sort</string>
     <string name="date_end">date end</string>
     <string name="date_start">date start</string>
-    <string name="type">type</string>
     <string name="pick">pick</string>
     <string name="appName">Bill manager</string>
     <string name="no_data">no data</string>
@@ -28,4 +26,13 @@
     <string name="kb">KB</string>
     <string name="yes">yes</string>
     <string name="cancel">cancel</string>
+    <string name="total_cost_">\"Total cost ¥ \"</string>
+    <string name="cost">cost</string>
+    <string name="dealer">dealer</string>
+    <string name="type">type</string>
+    <string name="date">date</string>
+    <string name="time">time</string>
+    <string name="confirm">confirm</string>
+    <string name="content">content</string>
+    <string name="cash">cash</string>
 </resources>

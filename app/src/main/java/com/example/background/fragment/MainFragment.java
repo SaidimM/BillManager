@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -21,9 +24,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.background.R;
 import com.example.background.Utils.BillManage;
 import com.example.background.Utils.SPUtils;
-import com.example.background.activities.MainActivity;
 import com.example.background.module.Bill;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -38,7 +41,7 @@ public class MainFragment extends BaseFragment {
     private View view;
     private TextView month;
     private TextView cost;
-    private TextView day;
+//    private TextView day;
     private RecyclerView recyclerView;
     private Calendar calendar, tempCalendar;
     private ImageView imageView;
@@ -46,9 +49,11 @@ public class MainFragment extends BaseFragment {
     private Date date;
     private int type;
     private RadioGroup radioGroup;
-    private TimeZone zone = TimeZone.getTimeZone("GMT");
+    private final TimeZone zone = TimeZone.getTimeZone("GMT");
     private SimpleDateFormat format;
     private BillManage billManage;
+//    private NestedScrollView scrollView;
+//    private AppBarLayout appBarLayout;
     private final String[] months = {
             "January",
             "February",
@@ -115,10 +120,30 @@ public class MainFragment extends BaseFragment {
         imageView = view.findViewById(R.id.image);
         month = view.findViewById(R.id.month);
         cost = view.findViewById(R.id.cost);
-        day = view.findViewById(R.id.day);
+//        day = view.findViewById(R.id.day);
         recyclerView = view.findViewById(R.id.list);
         add = view.findViewById(R.id.add);
+//        scrollView = view.findViewById(R.id.nestScrollView);
+//        appBarLayout = view.findViewById(R.id.appBar);
         add.setOnClickListener(view -> initDialog());
+//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)
+//                scrollView.getLayoutParams();
+//        layoutParams.setMargins(0, 0, 0, 0);
+//        scrollView.setLayoutParams(layoutParams);
+//        appBarLayout.addOnOffsetChangedListener((appBarLayout, i) -> {
+//            float a = (float) 30 / appBarLayout.getTotalScrollRange();
+//            int side = (int) Math.rint(a * i + 30);
+//            layoutParams.setMargins(side, 0, side, 0);
+//            scrollView.setLayoutParams(layoutParams);
+//            if (Math.abs(i) > 0) {
+//                float alpha = (float) Math.abs(i) / appBarLayout.getTotalScrollRange();
+//                appBarLayout.setAlpha(alpha);
+//                scrollView.getBackground().mutate().setAlpha(Math.round(alpha * 255));
+//            } else {
+//                appBarLayout.setAlpha(0);
+//                scrollView.getBackground().mutate().setAlpha(0);
+//            }
+//        });
     }
 
     public void initData() {
@@ -128,8 +153,9 @@ public class MainFragment extends BaseFragment {
         format = new SimpleDateFormat("yyyy-M-d HH:mm:ss", Locale.CHINA);
         format.setTimeZone(zone);
         month.setText(months[calendar.get(Calendar.MONTH)]);
-        cost.setText("Total cost  ¥ " + getCost(billManage.getMonthOrders()));
-        day.setText(daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
+        String StringCost = getString(R.string.total_cost_) + getCost(billManage.getMonthOrders());
+        cost.setText(StringCost);
+//        day.setText(daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -167,13 +193,13 @@ public class MainFragment extends BaseFragment {
         final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_main, null);
         customizeDialog.setTitle("add new order");
         customizeDialog.setView(dialogView);
-        ((TextView) dialogView.findViewById(R.id.tv_name)).setText("name");
-        ((TextView) dialogView.findViewById(R.id.tv_cost)).setText("cost");
-        ((TextView) dialogView.findViewById(R.id.tv_dealer)).setText("dealer");
-        ((TextView) dialogView.findViewById(R.id.tv_type)).setText("type");
-        ((TextView) dialogView.findViewById(R.id.tv_date)).setText("date");
-        ((TextView) dialogView.findViewById(R.id.tv_time)).setText("time");
-        ((Button) dialogView.findViewById(R.id.positive)).setText("confirm");
+        ((TextView) dialogView.findViewById(R.id.tv_name)).setText(R.string.name);
+        ((TextView) dialogView.findViewById(R.id.tv_cost)).setText(R.string.cost);
+        ((TextView) dialogView.findViewById(R.id.tv_dealer)).setText(R.string.dealer);
+        ((TextView) dialogView.findViewById(R.id.tv_type)).setText(R.string.type);
+        ((TextView) dialogView.findViewById(R.id.tv_date)).setText(R.string.date);
+        ((TextView) dialogView.findViewById(R.id.tv_time)).setText(R.string.time);
+        ((Button) dialogView.findViewById(R.id.positive)).setText(R.string.confirm);
         radioGroup = dialogView.findViewById(R.id.radio_group);
         for (int i = 0; i < 8; i++) {
             final int finalI = i;
@@ -223,11 +249,21 @@ public class MainFragment extends BaseFragment {
         toolbar.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    public void initColors(){
+        add.setVisibility(View.VISIBLE);
+        add.setAlpha(0f);
+        add.setColorNormal(Color.parseColor(accentColor));
+        add.animate().alpha(1).setDuration(1000).setInterpolator(
+                new AccelerateDecelerateInterpolator(getContext(), null));
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         initToolbar();
-        add.setColorNormal(Color.parseColor(accentColor));
+        initData();
+        if (add.getColorNormal() != Color.parseColor(accentColor))
+            initColors();
         Glide.with(this).load(SPUtils.getImagePath()).transition(withCrossFade()).into(imageView);
     }
 }

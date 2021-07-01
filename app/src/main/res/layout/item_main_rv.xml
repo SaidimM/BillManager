@@ -32,7 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/content"
-                android:text="content"
+                android:textColor="@color/black"
+                android:text="@string/content"
                 android:textSize="18sp"/>
         <TextView
                 android:layout_marginTop="5dp"
@@ -40,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cash"
                 android:layout_marginEnd="70dp"
-                android:text="cash"
+                android:text="@string/cash"
                 android:textSize="18sp"/>
     </LinearLayout>
 

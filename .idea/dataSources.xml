@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Android SQLite" uuid="bc4e9839-e4da-4eec-9aa1-629cd540923f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Hi\AppData\Local\JetBrains\IntelliJIdea2021.1\android\databases\SERIAL_NUMBER_26d871600f037ece\com.example.background\internal\DBFlowDataBase.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

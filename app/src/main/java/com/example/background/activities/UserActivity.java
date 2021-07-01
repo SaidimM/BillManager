@@ -3,12 +3,14 @@ package com.example.background.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
+import android.os.*;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,14 +21,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.background.R;
 import com.example.background.Utils.FileUtil;
+import com.example.background.Utils.ReadFile;
 import com.example.background.Utils.SPUtils;
+import com.example.background.Utils.color.Converter;
+import com.example.background.Utils.color.HSL;
+import com.example.background.Utils.color.RGB;
+import com.example.background.Utils.color.ReadColor;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -35,14 +49,19 @@ public class UserActivity extends AppCompatActivity {
     public static final int RC_TAKE_PHOTO = 1;
     private ConstraintLayout userLayout;
     private String filePath = "";
+    private ArrayList<String> colors;
     private ImageView userImage;
+    private RecyclerView colorsRv;
+    private BaseQuickAdapter<String, BaseViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        colors = new ArrayList<>();
         userImage = findViewById(R.id.userImage);
+        colorsRv = findViewById(R.id.colors);
         Glide.with(UserActivity.this)
                 .load(SPUtils.getImagePath())
                 .apply(RequestOptions.placeholderOf(R.drawable.main_back_pic))
@@ -57,7 +76,8 @@ public class UserActivity extends AppCompatActivity {
                 choosePhoto();
             }
         });
-
+        getColors();
+        initRecycler();
         userLayout.setOnClickListener(view -> {
             if (filePath == null) finish();
             if (!filePath.equals("") ) {
@@ -79,7 +99,7 @@ public class UserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_CHOOSE_PHOTO) {
-            assert data != null;
+            if (data == null) return;
             Uri uri = data.getData();
             filePath = FileUtil.getFilePathByUri(this, uri);
             if (!TextUtils.isEmpty(filePath)) {
@@ -88,6 +108,7 @@ public class UserActivity extends AppCompatActivity {
                 Glide.with(UserActivity.this).load(filePath)
                         .apply(RequestOptions.placeholderOf(R.drawable.main_back_pic))
                         .transition(withCrossFade()).into(userImage);
+                getColors();
             }
         }
     }
@@ -109,5 +130,33 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    private void initRecycler(){
+        colorsRv.setLayoutManager(new GridLayoutManager(this,3));
+        adapter = new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_color) {
+            @Override
+            protected void convert(BaseViewHolder helper, String item) {
+                helper.getView(R.id.content).setBackgroundColor(Color.parseColor(item));
+            }
+        };
+        colorsRv.setItemAnimator(new DefaultItemAnimator());
+        colorsRv.setAdapter(adapter);
+    }
 
+    private void getColors(){
+        Bitmap bitmap = ReadColor.getBitmap(SPUtils.getImagePath());
+        new Thread(() -> {
+            colors = ReadColor.getColors(bitmap);
+            handler.sendEmptyMessage(0);
+        }).start();
+    }
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message msg) {
+            switch (msg.what){
+                case 0 : adapter.setNewData(colors);
+            }
+            return true;
+        }
+    });
 }

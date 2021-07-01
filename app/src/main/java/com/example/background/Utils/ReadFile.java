@@ -10,11 +10,13 @@ import com.example.background.module.Bill;
 import com.example.background.module.FileBean;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
 import static android.content.ContentValues.TAG;
+import static com.example.background.Utils.FileUtil.getFileEncode;
 
 
 public class ReadFile {
@@ -95,9 +97,12 @@ public class ReadFile {
      * @param
      */
     public static void getDocumentData(Context context) {
+        ((MainActivity)context).setFiles(new ArrayList<>());
+        ArrayList<FileBean> files = new ArrayList<>();
+        ArrayList<FileBean> zips = new ArrayList<>();
         String[] columns = new String[]{MediaStore.Files.FileColumns._ID, MediaStore.Files.FileColumns.MIME_TYPE,
                 MediaStore.Files.FileColumns.SIZE, MediaStore.Files.FileColumns.DATE_MODIFIED, MediaStore.Files.FileColumns.DATA};
-        String select = "(_data LIKE '%.csv')";
+        String select = "(_data LIKE '%.csv' OR _data LIKE '%.zip')";
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(MediaStore.Files
                 .getContentUri("external"), columns, select, null, null);
@@ -106,109 +111,44 @@ public class ReadFile {
             columnIndexOrThrow_DATA = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA);
         }
         if (cursor != null) {
+            if (cursor.getCount() == 0) return;
             while (cursor.moveToNext()) {
                 String path = cursor.getString(columnIndexOrThrow_DATA);
                 FileBean document = FileUtil.getFileInfoFromFile(new File(path));
                 if (document.getFileName().contains("alipay")
-                        || document.getFileName().contains("微信"))
-                    ((MainActivity)context).getFiles().add(document);
-                Log.d(TAG, " csv " + document);
+                        || document.getFileName().contains("微信")){
+                    if (document.getType() == FileBean.ZIP_FILE) zips.add(document);
+                    else files.add(document);
+                }
+//                Log.d(TAG, " csv " + document);
             }
         }
         if (cursor != null) {
             cursor.close();
         }
+        for (FileBean zip : zips){
+            String name = zip.getFileName().substring(0,zip.getFileName().lastIndexOf('.'));
+            boolean contains = false;
+            for (FileBean file : files){
+                if (file.getFileName().contains(name)) {
+                    contains = true;
+                    break;
+                }
+            }
+            if (contains) continue;
+            files.add(zip);
+        }
+        ((MainActivity)context).setFiles(files);
     }
 
     public static ArrayList<Bill> setOrdersFromFile(ArrayList<FileBean> files) {
         ArrayList<Bill> bill = new ArrayList<>();
         for (FileBean file : files) {
             if (file == null) continue;
+            if (file.getType() == 0) continue;
             if (file.getIsSelect()) bill.addAll(Objects.requireNonNull(readCsvFile(file.getFilePath())));
         }
         return bill;
-    }
-
-    public static String getFileEncode(String path) {
-        String charset = "asci";
-        byte[] first3Bytes = new byte[3];
-        BufferedInputStream bis = null;
-        try {
-            boolean checked = false;
-            bis = new BufferedInputStream(new FileInputStream(path));
-            bis.mark(0);
-            int read = bis.read(first3Bytes, 0, 3);
-            if (read == -1)
-                return charset;
-            if (first3Bytes[0] == (byte) 0xFF && first3Bytes[1] == (byte) 0xFE) {
-                charset = "Unicode";//UTF-16LE
-                checked = true;
-            } else if (first3Bytes[0] == (byte) 0xFE && first3Bytes[1] == (byte) 0xFF) {
-                charset = "Unicode";//UTF-16BE
-                checked = true;
-            } else if (first3Bytes[0] == (byte) 0xEF && first3Bytes[1] == (byte) 0xBB && first3Bytes[2] == (byte) 0xBF) {
-                charset = "UTF8";
-                checked = true;
-            }
-            bis.reset();
-            if (!checked) {
-                int len = 0;
-                int loc = 0;
-                while ((read = bis.read()) != -1) {
-                    loc++;
-                    if (read >= 0xF0)
-                        break;
-                    if (0x80 <= read && read <= 0xBF) //单独出现BF以下的，也算是GBK
-                        break;
-                    if (0xC0 <= read && read <= 0xDF) {
-                        read = bis.read();
-                        if (0x80 <= read && read <= 0xBF)
-                            //双字节 (0xC0 - 0xDF) (0x80 - 0xBF),也可能在GB编码内
-                            continue;
-                        else
-                            break;
-                    } else if (0xE0 <= read && read <= 0xEF) { //也有可能出错，但是几率较小
-                        read = bis.read();
-                        if (0x80 <= read && read <= 0xBF) {
-                            read = bis.read();
-                            if (0x80 <= read && read <= 0xBF) {
-                                charset = "UTF-8";
-                                break;
-                            } else
-                                break;
-                        } else
-                            break;
-                    }
-                }
-                //TextLogger.getLogger().info(loc + " " + Integer.toHexString(read));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException ex) {
-                }
-            }
-        }
-        return charset;
-    }
-
-    private static String getEncode(int flag1, int flag2, int flag3) {
-        String encode = "";
-        // txt文件的开头会多出几个字节，分别是FF、FE（Unicode）,
-        // FE、FF（Unicode big endian）,EF、BB、BF（UTF-8）
-        if (flag1 == 255 && flag2 == 254) {
-            encode = "Unicode";
-        } else if (flag1 == 254 && flag2 == 255) {
-            encode = "UTF-16";
-        } else if (flag1 == 239 && flag2 == 187 && flag3 == 191) {
-            encode = "UTF8";
-        } else {
-            encode = "asci";// ASCII码
-        }
-        return encode;
     }
 
 }

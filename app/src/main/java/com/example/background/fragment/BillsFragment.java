@@ -76,7 +76,6 @@ public class BillsFragment extends BaseFragment implements android.view.ActionMo
 
     @Override
     public void initView() {
-        toolbar.setBackgroundColor(Color.parseColor(primaryColor));
         recycler = view.findViewById(R.id.recycler);
         sort = view.findViewById(R.id.sort);
         search = view.findViewById(R.id.search);
@@ -172,5 +171,10 @@ public class BillsFragment extends BaseFragment implements android.view.ActionMo
     public void onDestroyActionMode(android.view.ActionMode mode) {
         selectionTracker.clearSelection();
         this.actionMode = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

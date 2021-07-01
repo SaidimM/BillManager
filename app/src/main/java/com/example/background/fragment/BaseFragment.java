@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import com.example.background.R;
 import com.example.background.activities.MainActivity;
 import com.example.background.module.Bill;
 import com.example.background.module.FileBean;
@@ -45,5 +46,18 @@ public abstract class BaseFragment extends Fragment {
         primaryColor = ((MainActivity)context).getPrimaryColor();
         toolbar.setBackgroundColor(Color.parseColor(primaryColor));
         accentColor = ((MainActivity)context).getAccentColor();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        toolbar = ((MainActivity)context).getToolbar();
+        files = ((MainActivity)context).getFiles();
+        bills = ((MainActivity)context).getOrders();
+        primaryColor = ((MainActivity)context).getPrimaryColor();
+        toolbar.setBackgroundColor(Color.parseColor(primaryColor));
+        accentColor = ((MainActivity)context).getAccentColor();
+        toolbar.setTitle("");
+        toolbar.findViewById(R.id.search_ll).setVisibility(View.INVISIBLE);
     }
 }

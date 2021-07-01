@@ -100,7 +100,7 @@ public class StatisticsFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        toolbar.setBackgroundColor(Color.parseColor(primaryColor));
+
         typeList = view.findViewById(R.id.list_type);
         orderList = view.findViewById(R.id.bill);
         pieChart = view.findViewById(R.id.pie);

@@ -12,15 +12,17 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 /**
  *
  */
-@Table(database = DBFlowDataBase.class)
-public class FileBean extends BaseModel implements Parcelable {
-    @PrimaryKey(autoincrement = true)
+public class FileBean implements Parcelable {
+    public static final int ZIP_FILE = 0;
+    public static final int CSV_FILE = 1;
+
     private int id;
-    @Column private String fileName;
-    @Column private String filePath;
-    @Column private long fileSize;
-    @Column private String time;
-    @Column private boolean isSelect;
+    private String fileName;
+    private String filePath;
+    private long fileSize;
+    private String time;
+    private boolean isSelect;
+    private int type;
 
     public int getId() {
         return id;
@@ -70,6 +72,21 @@ public class FileBean extends BaseModel implements Parcelable {
         this.time = time;
     }
 
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     @Override
     public int describeContents() {
@@ -82,6 +99,7 @@ public class FileBean extends BaseModel implements Parcelable {
         dest.writeString(this.filePath);
         dest.writeLong(this.fileSize);
         dest.writeString(this.time);
+        dest.writeInt(this.type);
     }
 
     public FileBean() {
@@ -92,6 +110,7 @@ public class FileBean extends BaseModel implements Parcelable {
         this.filePath = in.readString();
         this.fileSize = in.readLong();
         this.time = in.readString();
+        this.type = in.readInt();
     }
 
     public static final Parcelable.Creator<FileBean> CREATOR = new Parcelable.Creator<FileBean>() {
@@ -105,16 +124,4 @@ public class FileBean extends BaseModel implements Parcelable {
             return new FileBean[size];
         }
     };
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "FileInfo{" +
-                "fileName='" + fileName + '\'' +
-                ", filePath='" + filePath + '\'' +
-                ", fileSize=" + fileSize +
-                ", time='" + time + '\'' +
-                ", isSelect=" + isSelect +
-                '}';
-    }
 }

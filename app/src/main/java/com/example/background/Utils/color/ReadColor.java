@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
-import java.io.File;
+import java.lang.reflect.GenericArrayType;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -248,40 +248,24 @@ public class ReadColor {
         return getColorFromBitmap(src);
     }
 
+    public static Bitmap getBitmap(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 10;
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+    public static Bitmap getBitmap(Context context, int resourceId) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 10;
+        return BitmapFactory.decodeResource(context.getResources(), resourceId, options);
+    }
+
     public static Color getColorFromBitmap(Bitmap src) {
-        float R = 0, G = 0, B = 0;
-        Map<Color, Integer> colors = new HashMap<>();
-        int colorAvgVal = 5;
-        int pixelColor;
-        int height = src.getHeight();
-        int width = src.getWidth();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                pixelColor = src.getPixel(x, y);
-                R = Math.round((float) Color.red(pixelColor) / colorAvgVal) * colorAvgVal;
-                G = Math.round((float) Color.green(pixelColor) / colorAvgVal) * colorAvgVal;
-                B = Math.round((float) Color.blue (pixelColor) / colorAvgVal) * colorAvgVal;
-                Color color = Color.valueOf(R, G, B);
-                if (colors.containsKey(color)) {
-                    int value = colors.get(color) + 1;
-                    colors.put(color, value);
-                } else colors.put(color, 1);
-            }
-        }
-        float cn = height * width;
-        ArrayList<Color> colorArrays = new ArrayList<>();
-        Map<Color,Integer> sorted = colors
-                .entrySet()
-                .stream()
-                .sorted(Collections.reverseOrder(comparingByValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
-                                LinkedHashMap::new));
-        for (Map.Entry<Color, Integer> entry : sorted.entrySet()) {
-            Color mapKey = entry.getKey();
-            Integer mapValue = entry.getValue();
-            colorArrays.add(mapKey);
-            System.out.println(getTag(mapKey) + ":" + mapValue + "  占比为" + mapValue / cn * 100 + "%");
-        }
+        ArrayList<String> colorArrays = getColors(src);
+        return String2Color(colorArrays.get(0));
+    }
+
+    public static Color getColorFromArray(ArrayList<Color> colorArrays) {
         Color result = new Color();
         for (Color c : colorArrays) {
             if (!getTag(c).equals("黑色") && !getTag(c).equals("白色") && !getTag(c).contains("灰")) {
@@ -292,13 +276,88 @@ public class ReadColor {
         return result;
     }
 
+    public static ArrayList<String> getColors(Bitmap src) {
+        float R = 0, G = 0, B = 0;
+        Map<Color, Integer> colors = new HashMap<>();
+        int colorAvgVal = 16;
+        int pixelColor;
+        int height = src.getHeight();
+        int width = src.getWidth();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                pixelColor = src.getPixel(x, y);
+                R = Math.round(Color.red(pixelColor) / colorAvgVal) * colorAvgVal;
+                G = Math.round(Color.green(pixelColor) / colorAvgVal) * colorAvgVal;
+                B = Math.round(Color.blue(pixelColor) / colorAvgVal) * colorAvgVal;
+                Color color = Color.valueOf(R, G, B);
+                if (colors.containsKey(color)) {
+                    int value = colors.get(color) + 1;
+                    colors.put(color, value);
+                } else colors.put(color, 1);
+            }
+        }
+        float cn = height * width;
+        Map<Color, Integer> sorted = colors
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                        LinkedHashMap::new));
+        int count = 0;
+        ArrayList<Color> colorArrays = new ArrayList<>();
+        for (Map.Entry<Color, Integer> entry : sorted.entrySet()) {
+            Color mapKey = entry.getKey();
+            Integer mapValue = entry.getValue();
+            String colorStr = getTag(mapKey);
+            if (count < 100 && !colorStr.equals("黑色")) {
+                count++;
+                System.out.println(colorStr + ":" + mapValue + "  占比为" + mapValue / cn * 100 + "%");
+                colorArrays.add(mapKey);
+            }
+        }
+        return sortColor(colorArrays, 48);
+    }
 
-    public static String getColorString(Color color) {
-        String string = "#";
-        string += Integer.toHexString((int) color.red());
-        string += Integer.toHexString((int) color.green());
-        string += Integer.toHexString((int) color.blue());
-        return string;
+    private static ArrayList<String> sortColor(ArrayList<Color> colors, int radios){
+        int r,g,b, R = 0,G=0,B=0;
+        ArrayList<String> sortedColor = new ArrayList<>();
+        for (Color c : colors){
+            boolean isSimilar = true;
+            r= (int) c.red() + 1;
+            g= (int) c.green() + 1;
+            b= (int) c.blue() + 1;
+            if (r/radios != R) isSimilar = false;
+            if (g/radios != G) isSimilar = false;
+            if (b/radios != B) isSimilar = false;
+            if (isSimilar) continue;
+            R = r/radios;
+            G = g/radios;
+            B = b/radios;
+            sortedColor.add(Color2String(c));
+            if (sortedColor.size()>=9) break;
+        }
+        return sortedColor;
+    }
+
+    public static String Color2String(Color color) {
+        String R = Integer.toHexString((int) color.red());
+        if (R.length() < 2)
+            R = "0" + R;
+        String G = Integer.toHexString((int) color.green());
+        if (G.length() < 2)
+            G = "0" + G;
+        String B = Integer.toHexString((int) color.blue());
+        if (B.length() < 2)
+            B = "0" + B;
+        return "#" + R + G + B;
+    }
+
+    //String到Color的转换
+    public static Color String2Color(String str) {
+        float r = Integer.parseInt(str.substring(1, 3), 16);
+        float g = Integer.parseInt(str.substring(3, 5), 16);
+        float b = Integer.parseInt(str.substring(5, 7), 16);
+        return Color.valueOf(r, g, b);
     }
 
     public static String getTag(Color color) {
@@ -310,74 +369,4 @@ public class ReadColor {
         String k = String.format("%s%s%s", r, g, b);
         return colors.get(k);
     }
-
-    public static Color getAccent(Color primary) {
-        TransformColor transform = new TransformColor();
-        /*
-         * Increase or decrease color brightness, saturation, or hue.
-         */
-        Pixel pixel = new Pixel();
-        pixel.setRGB(primary.toArgb());
-        transform.rgbToHsl(pixel);
-        pixel.luminosity *= (0.01);
-        if (pixel.luminosity < 0.0)
-            pixel.luminosity = 0.0;
-        else if (pixel.luminosity > 1.0)
-            pixel.luminosity = 1.0;
-        if (pixel.saturation < 0.0)
-            pixel.saturation = 0.0;
-        else if (pixel.saturation > 1.0)
-            pixel.saturation = 1.0;
-        pixel.hue *= (0.01) * 50;
-        if (pixel.hue < 0.0)
-            pixel.hue += 1.0;
-        else if (pixel.hue > 1.0)
-            pixel.hue -= 1.0;
-        transform.hslToRgb(pixel);
-        return Color.valueOf(pixel.getRGB());
-    }
-
-    public static Color modulate(double percent_hue, double percent_saturation, double percent_brightness, Pixel pixel) {
-        TransformColor transform = new TransformColor();
-        /*
-         * Increase or decrease color brightness, saturation, or hue.
-         */
-        transform.rgbToHsl(pixel);
-        pixel.luminosity *= (0.01) * percent_brightness;
-        if (pixel.luminosity < 0.0)
-            pixel.luminosity = 0.0;
-        else if (pixel.luminosity > 1.0)
-            pixel.luminosity = 1.0;
-        pixel.saturation *= (0.01) * percent_saturation;
-        if (pixel.saturation < 0.0)
-            pixel.saturation = 0.0;
-        else if (pixel.saturation > 1.0)
-            pixel.saturation = 1.0;
-        pixel.hue *= (0.01) * percent_hue;
-        if (pixel.hue < 0.0)
-            pixel.hue += 1.0;
-        else if (pixel.hue > 1.0)
-            pixel.hue -= 1.0;
-        transform.hslToRgb(pixel);
-        return Color.valueOf(pixel.getRGB());
-    }
-
-    public static Color contrast(double percent, Pixel pixel) {
-        TransformColor transform = new TransformColor();
-        double alpha = percent / 100.0;
-
-        /*
-         * Enhance contrast: dark color become darker, light color become lighter.
-         */
-        transform.rgbToHsl(pixel);
-        pixel.luminosity += alpha * (alpha * (Math.sin(Math.PI * (pixel.luminosity - alpha)) + 1.0) - pixel.luminosity);
-        if (pixel.luminosity > 1.0)
-            pixel.luminosity = 1.0;
-        else if (pixel.luminosity < 0.0)
-            pixel.luminosity = 0.0;
-        transform.hslToRgb(pixel);
-        return Color.valueOf(pixel.getRGB());
-    }
-
-
 }
